@@ -1,9 +1,12 @@
 import re
+
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.text import slugify
+from storages.backends.s3boto3 import S3Boto3Storage
 
 from .converters import to_url
 from .managers import VersionManager, VersionFileManager
@@ -41,6 +44,9 @@ class Version(models.Model):
         null=True,
         blank=True,
         upload_to="release_report_cover/",
+        storage=S3Boto3Storage(
+            bucket_name=settings.STATIC_CONTENT_BUCKET_NAME  # use our public bucket
+        ),
     )
     sponsor_message = models.TextField(
         default="",
