@@ -291,6 +291,20 @@ class User(BaseUser):
             return None
         return f"https://github.com/{self.github_username}"
 
+    @staticmethod
+    def get_user_by_github_url(url: str):
+        if not url:
+            return None
+        github_user = url.split("/")[-1]
+
+        if not github_user:
+            return None
+        try:
+            user = User.objects.get(github_username=github_user)
+        except User.DoesNotExist:
+            user = None
+        return user
+
     @transaction.atomic
     def delete_account(self):
         from . import tasks
