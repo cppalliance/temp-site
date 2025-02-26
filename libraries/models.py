@@ -51,9 +51,12 @@ class CommitAuthor(models.Model):
 
     @property
     def display_name(self):
+        return getattr(self.user, "display_name", None)
+
+    @property
+    def user(self):
         User = get_user_model()
-        u = User.get_user_by_github_url(self.github_profile_url)
-        return getattr(u, "display_name", None)
+        return User.get_user_by_github_url(self.github_profile_url)
 
     def __str__(self):
         return self.name

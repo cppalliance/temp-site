@@ -70,8 +70,11 @@ def avatar(
         href = user.github_profile_url or get_commit_author_attribute(
             commitauthor, "github_profile_url"
         )
+        visible_name = get_commit_author_attribute(commitauthor, "name")
+        if user.is_commit_author_name_overridden and user.display_name:
+            visible_name = user.display_name
         return base_avatar(
-            user.display_name or commitauthor.display_name,
+            visible_name,
             image_url,
             href,
             **kwargs,
@@ -90,8 +93,17 @@ def avatar(
         github_profile_url = get_commit_author_attribute(
             commitauthor, "github_profile_url"
         )
+
+        visible_name = name
+        if (
+            commitauthor.user
+            and commitauthor.user.is_commit_author_name_overridden
+            and display_name
+        ):
+            visible_name = display_name
+
         return base_avatar(
-            display_name or name,
+            visible_name,
             avatar_url,
             github_profile_url,
             **kwargs,
