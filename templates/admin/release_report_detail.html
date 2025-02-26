@@ -189,7 +189,11 @@ body {
                 {% avatar commitauthor=author %}
                 <div class="w-full flex flex-col ml-2">
                   <div class="text-[0.8rem] font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                    {{ author.display_name|default:author.name }}
+                    {% if author.user.is_commit_author_name_overridden %}
+                      {{ author.display_name }}
+                    {% else %}
+                      {{ author.name }}
+                    {% endif %}
                   </div>
                   <div class="text-[0.7rem]"><span class="font-bold">{{ author.commit_count }}</span> commit{{ author.commit_count|pluralize }}</div>
                 </div>
@@ -217,7 +221,11 @@ body {
                 {% avatar commitauthor=item %}
                 <div class="w-full flex flex-col ml-2">
                   <div class="text-[0.8rem] font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                    {{ item.name }}
+                    {% if item.user.is_commit_author_name_overridden %}
+                      {{ item.display_name }}
+                    {% else %}
+                      {{ item.name }}
+                    {% endif %}
                   </div>
                   <div class="text-[0.7rem]"><span class="font-bold">{{ item.total_count }}</span> post{{ item.total_count|pluralize }}</div>
                 </div>
@@ -417,7 +425,11 @@ body {
                   {% avatar commitauthor=author %}
                   <div class="w-full flex flex-col ml-2">
                     <div class="text-[0.8rem] font-semibold overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                      {{ author.name }}
+                      {% if author.user.is_commit_author_name_overridden %}
+                        {{ author.display_name }}
+                      {% else %}
+                        {{ author.name }}
+                      {% endif %}
                     </div>
                     <div class="text-[0.7rem]"><span class="font-bold">{{ author.commit_count }}</span> commit{{ author.commit_count|pluralize }}</div>
                   </div>
